@@ -1,0 +1,73 @@
+/* Reset básico */
+body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4; }
+
+/* CONTENEDOR PRINCIPAL */
+#nattialia-container {
+    position: fixed;
+    bottom: 0;
+    right: 20px;
+    width: 320px;  /* Ajusta según el tamaño de tus videos */
+    height: 450px;
+    z-index: 9999;
+    /* Esto permite hacer clic en la web a través de las partes transparentes del video */
+    pointer-events: none; 
+}
+
+/* ESTILOS DE LOS VIDEOS */
+video {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ajuste perfecto */
+    transition: opacity 0.3s ease; /* Suaviza el cambio */
+}
+
+/* Clase para ocultar videos suavemente */
+.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* INTERFAZ DE CONTROLES (Botones e Inputs) */
+.controls-area {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    pointer-events: auto; /* Reactivamos el clic para los botones */
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+/* ESTILO DEL BOTÓN DE INICIO */
+#btn-start {
+    background-color: #ff0055;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+#btn-start:hover { background-color: #d60045; }
+
+/* ESTILO DEL INPUT Y BOTÓN DE ENVIAR */
+#user-input {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 65%;
+}
+
+#send-btn {
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: none;
+    background-color: #333;
+    color: white;
+    cursor: pointer;
+}
