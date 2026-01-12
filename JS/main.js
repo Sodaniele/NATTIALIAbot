@@ -13,8 +13,12 @@ let estadoActual = 'ESPERANDO';
 // --- FUNCIONES DE CONTROL DE VIDEO ---
 
 function reproducirVideo(nombreArchivo) {
-    // Construimos la ruta completa
-    videoAction.src = `assets/${nombreArchivo}`;
+    console.log("Cargando video: " + nombreArchivo);
+    
+    // CAMBIO IMPORTANTE: ./ASSETS/ en mayúsculas
+    videoAction.src = "./ASSETS/" + nombreArchivo;
+    
+
     
     // Cuando el video carga, lo mostramos y le damos play
     videoAction.onloadeddata = () => {
