@@ -1,4 +1,4 @@
-/* Importamos una fuente bonita */
+/* Aca importamos una fuente linda */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
 body {
@@ -6,7 +6,7 @@ body {
     background-color: #f0f2f5;
 }
 
-/* EL CONTENEDOR (Ahora parece una tarjeta flotante) */
+/* EL CONTENEDOR (una tarjeta flotante) */
 #nattialia-container {
     position: fixed;
     bottom: 20px;
@@ -19,10 +19,12 @@ body {
     background-color: #fff;
     z-index: 9999;
     
-    /* ¡AQUÍ ESTABA EL PROBLEMA! */
-    pointer-events: auto; /* Antes ponía 'none'. Con 'auto' vuelve a funcionar */
+   
+    pointer-events: auto; /
 }
-video {
+
+#nattialia-container video, 
+#nattialia-container img {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -34,7 +36,7 @@ video {
 
 .hidden { opacity: 0; pointer-events: none; }
 
-/* ZONA DE CONTROLES (Más moderna) */
+/* ZONA DE CONTROLES */
 .controls-area {
     position: absolute;
     bottom: 20px;
@@ -59,7 +61,7 @@ video {
     cursor: pointer;
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     transition: transform 0.2s;
-    animation: flotar 3s ease-in-out infinite; /* Animación de flotar */
+    animation: flotar 3s ease-in-out infinite; /* Esta es la animación de flotar */
 }
 
 #btn-start:hover { transform: scale(1.05); }
@@ -67,7 +69,7 @@ video {
 /* INTERFAZ DE CHAT */
 #chat-interface {
     width: 100%;
-    background: rgba(255, 255, 255, 0.9); /* Fondo semitransparente */
+    background: rgba(255, 255, 255, 0.9); /* Este es el fondo semitransparente */
     padding: 10px;
     border-radius: 15px;
     display: flex;
@@ -98,4 +100,76 @@ video {
     0% { transform: translateY(0px); }
     50% { transform: translateY(-5px); }
     100% { transform: translateY(0px); }
+}
+
+/* TARJETA FINAL DE CONTACTO */
+#contact-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centrado perfecto */
+    width: 85%;
+    background: rgba(255, 255, 255, 0.95); /* Blanco casi opaco */
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    z-index: 100;
+    
+    /* Animación de entrada */
+    animation: aparecer 0.5s ease-out;
+}
+
+#contact-card h3 {
+    margin-top: 0;
+    color: #764ba2;
+}
+
+#contact-card p {
+    font-size: 14px;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.btn-restart {
+    background: #333;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+@keyframes aparecer {
+    from { opacity: 0; transform: translate(-50%, -40%); }
+    to { opacity: 1; transform: translate(-50%, -50%); }
+}
+/* MENSAJE DE ERROR FLOTANTE */
+#error-message {
+    position: absolute;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%); /* Centrado horizontal */
+    
+    background-color: #ff6b6b; /* Rojo suave */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px; /* Bordes muy redondos */
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    z-index: 200;
+    
+    /* Para que el texto no se rompa */
+    white-space: nowrap;
+    
+    /* Animación chula */
+    animation: bajarYsubir 0.3s ease-out;
+}
+
+@keyframes bajarYsubir {
+    from { transform: translate(-50%, -20px); opacity: 0; }
+    to { transform: translate(-50%, 0); opacity: 1; }
 }
