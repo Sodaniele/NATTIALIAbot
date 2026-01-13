@@ -32,13 +32,15 @@ function reproducirVideo(nombreArchivo) {
 }
 
 function volverAlReposo() {
-    // Oculto Action y pausamos para ahorrar recursos
     videoAction.style.display = 'none';
     videoAction.pause();
     
-    // Muestro Idle (que siempre está corriendo en bucle)
     videoIdle.style.opacity = 1;
-    videoIdle.play();
+    
+    // TRUCO: Solo le damos al play si es un VIDEO. Si es FOTO, no hacemos nada.
+    if (videoIdle.tagName === 'VIDEO') {
+        videoIdle.play();
+    }
 }
 
 // Cuando termina el video de hablar, vuelve a reposo
@@ -70,19 +72,18 @@ function procesarInput() {
     switch(estadoActual) {
         
         case 'SELECCION_SERVICIO':
-            // 1. Opción SOPORTE
+            // 1. Opción de SOPORTE
             if (texto.includes('soporte')) {
                 reproducirVideo('rama_soporte.mp4'); 
                 estadoActual = 'TIPO_SOPORTE';
             } 
-            // 2. Opción DESARROLLO
+            // 2. Opción de DESARROLLO
             else if (texto.includes('desarrollo') || texto.includes('software')) {
                 reproducirVideo('rama_desarrollo.mp4');
                 estadoActual = 'LENGUAJE';
             } 
-            // 3. NUEVA OPCIÓN: OTRA NECESIDAD (Sin video, directo al contacto)
+            // 3. Opcion de OTRA NECESIDAD (Sin video, directo al correo)
             else if (texto.includes('otra') || texto.includes('otro') || texto.includes('necesidad')) {
-                // Como no hay video, mostramos la tarjeta directamente
                 mostrarContacto("📧 Para otras consultas: info@nattia.com");
                 estadoActual = 'FIN';
             }
@@ -101,7 +102,7 @@ function procesarInput() {
                 estadoActual = 'FIN';
                 setTimeout(() => {
     mostrarContacto("📧 Escribe a: soporte@nattia.com");
-}, 4000); // Espera 4 segundos (lo que dura el video) y muestra la tarjeta
+}, 4000); // Espera 4 segundos (o lo que dura el video) y muestra la tarjeta
             } else {
                 alert("¿Prefieres presencial o remoto?");
             }
