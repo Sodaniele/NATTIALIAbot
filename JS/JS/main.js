@@ -70,19 +70,26 @@ function procesarInput() {
     switch(estadoActual) {
         
         case 'SELECCION_SERVICIO':
-            // Esperamos: soporte o desarrollo
+            // 1. Opción SOPORTE
             if (texto.includes('soporte')) {
-                // Video: Presencial, remoto o ambos?
                 reproducirVideo('rama_soporte.mp4'); 
                 estadoActual = 'TIPO_SOPORTE';
             } 
+            // 2. Opción DESARROLLO
             else if (texto.includes('desarrollo') || texto.includes('software')) {
-                // Video: Qué lenguaje? Java, .net...?
                 reproducirVideo('rama_desarrollo.mp4');
                 estadoActual = 'LENGUAJE';
             } 
+            // 3. NUEVA OPCIÓN: OTRA NECESIDAD (Sin video, directo al contacto)
+            else if (texto.includes('otra') || texto.includes('otro') || texto.includes('necesidad')) {
+                // Como no hay video, mostramos la tarjeta directamente
+                mostrarContacto("📧 Para otras consultas: info@nattia.com");
+                estadoActual = 'FIN';
+            }
+            // 4. Si no entiende nada
             else {
-                alert("Por favor, escribe 'Soporte' o 'Desarrollo'.");
+                // Actualizamos el mensaje de error para que sepa qué puede decir
+                mostrarError("⚠️ Escribe: Soporte, Desarrollo u Otra");
             }
             break;
 
@@ -93,7 +100,7 @@ function procesarInput() {
                 reproducirVideo('final_ventas.mp4');
                 estadoActual = 'FIN';
                 setTimeout(() => {
-    mostrarContacto("📧 Escribe a: ventas@nattia.com");
+    mostrarContacto("📧 Escribe a: soporte@nattia.com");
 }, 4000); // Espera 4 segundos (lo que dura el video) y muestra la tarjeta
             } else {
                 alert("¿Prefieres presencial o remoto?");
@@ -140,4 +147,19 @@ function mostrarContacto(mensaje) {
     texto.innerText = mensaje;
     card.classList.remove('hidden');
     card.style.display = 'block';
+}
+// Función para mostrar errores temporales
+function mostrarError(texto) {
+    const errorDiv = document.getElementById('error-message');
+    
+    if (errorDiv) {
+        errorDiv.innerText = texto; // Ponemos el texto que queramos
+        errorDiv.style.display = 'block'; // Lo mostramos
+        errorDiv.classList.remove('hidden');
+
+        // Hacemos que desaparezca solo a los 3 segundos
+        setTimeout(() => {
+            errorDiv.style.display = 'none';
+        }, 3000);
+    }
 }
