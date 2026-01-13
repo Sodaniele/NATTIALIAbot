@@ -1,0 +1,148 @@
+/* Aca importamos una fuente linda */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f0f2f5;
+}
+
+/* EL CONTENEDOR (una tarjeta flotante) */
+#nattialia-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 220px;
+    height: 380px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    background-color: #fff;
+    z-index: 9999;
+    
+   
+    pointer-events: auto; /
+}
+
+#nattialia-container video, 
+#nattialia-container img {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.4s ease-in-out;
+}
+
+.hidden { opacity: 0; pointer-events: none; }
+
+/* ZONA DE CONTROLES */
+.controls-area {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 0 15px;
+    box-sizing: border-box;
+}
+
+/* BOTÓN DE INICIO */
+#btn-start {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
+    animation: flotar 3s ease-in-out infinite; /* Esta es la animación de flotar */
+}
+
+#btn-start:hover { transform: scale(1.05); }
+
+/* INTERFAZ DE CHAT */
+#chat-interface {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.9); /* Este es el fondo semitransparente */
+    padding: 10px;
+    border-radius: 15px;
+    display: flex;
+    gap: 5px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+#user-input {
+    flex: 1; /* Ocupa todo el espacio posible */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    outline: none;
+}
+
+#send-btn {
+    background-color: #764ba2;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0 15px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Animación pequeña */
+@keyframes flotar {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0px); }
+}
+
+/* TARJETA FINAL DE CONTACTO */
+#contact-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centrado perfecto */
+    width: 85%;
+    background: rgba(255, 255, 255, 0.95); /* Blanco casi opaco */
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    z-index: 100;
+    
+    /* Animación de entrada */
+    animation: aparecer 0.5s ease-out;
+}
+
+#contact-card h3 {
+    margin-top: 0;
+    color: #764ba2;
+}
+
+#contact-card p {
+    font-size: 14px;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.btn-restart {
+    background: #333;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+@keyframes aparecer {
+    from { opacity: 0; transform: translate(-50%, -40%); }
+    to { opacity: 1; transform: translate(-50%, -50%); }
+}
