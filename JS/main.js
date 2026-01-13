@@ -7,7 +7,7 @@ const btnStart = document.getElementById('btn-start');
 const chatInterface = document.getElementById('chat-interface');
 
 // --- ESTADO DE LA CONVERSACIÓN ---
-// Controla en qué punto del guion estamos
+// Esto controla en qué punto del guion estamos
 let estadoActual = 'ESPERANDO'; 
 
 // --- FUNCIONES DE CONTROL DE VIDEO ---
@@ -15,12 +15,11 @@ let estadoActual = 'ESPERANDO';
 function reproducirVideo(nombreArchivo) {
     console.log("Cargando video: " + nombreArchivo);
     
-    // CAMBIO IMPORTANTE: ./ASSETS/ en mayúsculas
+// IMPORTANTE ./ASSETS/ en mayúsculas!!
     videoAction.src = "./ASSETS/" + nombreArchivo;
     
 
-    
-    // Cuando el video carga, lo mostramos y le damos play
+// Cuando el video carga, lo muestro y le damos play
     videoAction.onloadeddata = () => {
         videoIdle.style.opacity = 0;       // Ocultamos Idle
         videoAction.classList.remove('hidden'); // Mostramos Action
@@ -33,16 +32,18 @@ function reproducirVideo(nombreArchivo) {
 }
 
 function volverAlReposo() {
-    // Ocultamos Action y pausamos para ahorrar recursos
     videoAction.style.display = 'none';
     videoAction.pause();
     
-    // Mostramos Idle (que siempre está corriendo en bucle)
     videoIdle.style.opacity = 1;
-    videoIdle.play();
+    
+    // TRUCO: Solo le damos al play si es un VIDEO. Si es FOTO, no hacemos nada.
+    if (videoIdle.tagName === 'VIDEO') {
+        videoIdle.play();
+    }
 }
 
-// EVENTO CLAVE: Cuando termina el video de hablar, vuelve a reposo
+// Cuando termina el video de hablar, vuelve a reposo
 videoAction.addEventListener('ended', () => {
     volverAlReposo();
 });
@@ -54,11 +55,11 @@ function iniciarConversacion() {
     btnStart.style.display = 'none';
     chatInterface.style.display = 'block';
 
-    // 2. Reproducimos el saludo inicial
-    // Video: "Hola soy Nattialia, ¿Soporte o Desarrollo?"
+    // 2. Reproduzco el saludo inicial
+    // Video: "Hola soy Nattialia, Soporte o Desarrollo?"
     reproducirVideo('intro.mp4'); 
     
-    // 3. Actualizamos el estado
+    // 3. Actualizo el estado
     estadoActual = 'SELECCION_SERVICIO';
 }
 
@@ -71,29 +72,37 @@ function procesarInput() {
     switch(estadoActual) {
         
         case 'SELECCION_SERVICIO':
-            // Esperamos: "soporte" o "desarrollo"
+            // 1. Opción de SOPORTE
             if (texto.includes('soporte')) {
-                // Video: "¿Presencial, remoto o ambos?"
                 reproducirVideo('rama_soporte.mp4'); 
                 estadoActual = 'TIPO_SOPORTE';
             } 
+            // 2. Opción de DESARROLLO
             else if (texto.includes('desarrollo') || texto.includes('software')) {
-                // Video: "¿Qué lenguaje? ¿Java, .net...?"
                 reproducirVideo('rama_desarrollo.mp4');
                 estadoActual = 'LENGUAJE';
             } 
+            // 3. Opcion de OTRA NECESIDAD (Sin video, directo al correo)
+            else if (texto.includes('otra') || texto.includes('otro') || texto.includes('necesidad')) {
+                mostrarContacto("📧 Para otras consultas: info@nattia.com");
+                estadoActual = 'FIN';
+            }
+            // 4. Si no entiende nada
             else {
-                alert("Por favor, escribe 'Soporte' o 'Desarrollo'.");
+                // Actualizamos el mensaje de error para que sepa qué puede decir
+                mostrarError("⚠️ Escribe: Soporte, Desarrollo u Otra");
             }
             break;
 
         case 'TIPO_SOPORTE':
-            // Esperamos: "presencial", "remoto", "ambos"
+            // Esperamos: presencial, remoto, ambos
             if (texto.includes('presencial') || texto.includes('remoto') || texto.includes('ambos')) {
-                // Video: "Perfecto, te paso con ventas..."
+                // Video: Perfecto, te paso con ventas...
                 reproducirVideo('final_ventas.mp4');
                 estadoActual = 'FIN';
-                setTimeout(() => alert("📧 Contacto Ventas: soporte@nattia.com"), 4000);
+                setTimeout(() => {
+    mostrarContacto("📧 Escribe a: soporte@nattia.com");
+}, 4000); // Espera 4 segundos (o lo que dura el video) y muestra la tarjeta
             } else {
                 alert("¿Prefieres presencial o remoto?");
             }
@@ -101,10 +110,12 @@ function procesarInput() {
 
         case 'LENGUAJE':
             // Esperamos: cualquier lenguaje
-            // Video: "Perfecto, te paso con desarrollo..."
+            // Video: Perfecto, te paso con desarrollo...
             reproducirVideo('final_dev.mp4');
             estadoActual = 'FIN';
-            setTimeout(() => alert("📧 Contacto Desarrollo: dev@nattia.com"), 4000);
+            setTimeout(() => {
+    mostrarContacto("📧 Escribe a: dev@nattia.com");
+}, 4000);
             break;
 
         case 'FIN':
@@ -123,3 +134,33 @@ btnEnviar.addEventListener('click', procesarInput);
 inputField.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') procesarInput();
 });
+
+// Función para mostrar la tarjeta final bonita
+function mostrarContacto(mensaje) {
+    const card = document.getElementById('contact-card');
+    const texto = document.getElementById('contact-text');
+    const chat = document.getElementById('chat-interface');
+    
+    // Ocultamos el chat para que no moleste
+    if(chat) chat.style.display = 'none';
+    
+    // Ponemos el texto y mostramos la tarjeta
+    texto.innerText = mensaje;
+    card.classList.remove('hidden');
+    card.style.display = 'block';
+}
+// Función para mostrar errores temporales
+function mostrarError(texto) {
+    const errorDiv = document.getElementById('error-message');
+    
+    if (errorDiv) {
+        errorDiv.innerText = texto; // Ponemos el texto que queramos
+        errorDiv.style.display = 'block'; // Lo mostramos
+        errorDiv.classList.remove('hidden');
+
+        // Hacemos que desaparezca solo a los 3 segundos
+        setTimeout(() => {
+            errorDiv.style.display = 'none';
+        }, 3000);
+    }
+}
